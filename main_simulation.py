@@ -38,7 +38,7 @@ over signal a poorly chosen free-evolution time produces:
 import numpy as np
 import matplotlib.pyplot as plt
 
-from defect_field import notch_leakage_field, plot_notch_geometry
+from defect_field import notch_leakage_field, plot_notch_geometry, plot_nv_sensor
 from ramsey_sensor import (
     GAMMA_NV, project_field,
     ramsey_p1, ramsey_p1_qutip,
@@ -92,6 +92,28 @@ def main():
     
     fig1.tight_layout()
     fig1.savefig('fig1_geometry_field.png', dpi=140)
+
+    # --- Figure 1b: geometry with NV sensor schematic ---
+    # Shows the defect cross-section with an NV-center quantum sensor
+    # positioned at (x=0, y=liftoff) with its quantization axis rotated
+    # by angle theta from the vertical. Labels B_‖ at the sensor.
+    fig1b, ax1b = plt.subplots(figsize=(8, 7))
+    
+    # Draw the defect geometry
+    plot_notch_geometry(ax1b, x_range=(-15, 15), a=a, b=b)
+    
+    # NV sensor parameters
+    theta_sensor = np.pi / 4  # 45-degree rotation from vertical
+    sensor_x = 0.0
+    sensor_y = liftoff
+    
+    # Draw the NV sensor schematic
+    plot_nv_sensor(ax1b, sensor_x, sensor_y, theta_sensor,
+                   label_B_parallel=True)
+    
+    ax1b.set_title('MFL Defect Geometry with NV Quantum Sensor', fontsize=11)
+    fig1b.tight_layout()
+    fig1b.savefig('fig1_geometry_field_bis.png', dpi=140)
 
     # --- Operating point: pick tau_scan and B_bias from the peak field ---
     phi_target = np.pi / 4  # keeps the peak field within a monotonic,
